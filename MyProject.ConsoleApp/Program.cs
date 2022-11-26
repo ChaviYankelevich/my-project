@@ -10,6 +10,7 @@ namespace MyProject.ConsoleApp
         {
             Console.WriteLine("Hello World!");
             //הבה ננסה
+            //it worked
 
             var mock = new MockContext();
 
