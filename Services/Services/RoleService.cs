@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using common.DTOs;
+using Microsoft.EntityFrameworkCore;
 using MyProject.Repositories.Entities;
 using MyProject.Repositories.Interfaces;
 using Services.Interfaces;
@@ -22,29 +23,29 @@ namespace Services.Services
             _roleRepository = roleRepository;
             _mapper = mapper;
         }
-        public RoleDTO Add(int id, string name, string description)
+        public async Task<RoleDTO> AddAsync(int id, string name, string description)
         {
-            return _mapper.Map<RoleDTO>(_roleRepository.Add(id,name,description));
+            return _mapper.Map<RoleDTO>(await _roleRepository.AddAsync(id,name,description));
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            _roleRepository.Delete(id);
+            await _roleRepository.DeleteAsync(id);
         }
 
-        public List<RoleDTO> GetAll()
+        public async Task<DbSet<RoleDTO>> GetAllAsync()
         {
-            return _mapper.Map<List<RoleDTO>>(_roleRepository.GetAll());
+            return _mapper.Map<DbSet<RoleDTO>>(await _roleRepository.GetAllAsync());
         }
 
-        public RoleDTO GetById(int id)
+        public async Task<RoleDTO> GetByIdAsync(int id)
         {
-            return _mapper.Map<RoleDTO>(_roleRepository.GetById(id));
+            return _mapper.Map<RoleDTO>(await _roleRepository.GetByIdAsync(id));
         }
 
-        public RoleDTO Update(Roles c)
+        public async Task<RoleDTO> UpdateAsync(Roles c)
         {
-            return _mapper.Map<RoleDTO>(_roleRepository.Update(c));
+            return _mapper.Map<RoleDTO>(await _roleRepository.UpdateAsync(c));
         }
     }
 }

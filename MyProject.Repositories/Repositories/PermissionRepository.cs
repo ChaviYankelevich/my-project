@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MyProject.Repositories.Interfaces;
 using MyProject.Repositories.Entities;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace MyProject.Repositories.Repositories
 {
@@ -19,32 +19,38 @@ namespace MyProject.Repositories.Repositories
             _context = context;
         }
 
-        public Permission Add(int id, string name, string description)
+        public async Task<Permission> AddAsyncc(int id, string name, string description)
         {
             Permission r = new Permission(id, description, name);
             _context.Permissions.Add(r);
+            await _context.SaveChangesAsync();
             return r;
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            _context.Permissions.Remove(_context.Permissions.Find(r => r.Id == id));
+            Permission p= _context.Permissions.ToList<Permission>().Find(r => r.Id == id);
+            _context.Permissions.Remove(p);
+            await _context.SaveChangesAsync();
         }
 
-        public List<Permission> GetAll()
+        public async Task<DbSet<Permission>> GetAllAsync()
         {
+            await _context.SaveChangesAsync();
             return _context.Permissions;
         }
 
-        public Permission GetById(int Id)
+        public async Task<Permission> GetByIdAsync(int Id)
         {
-            return _context.Permissions.Find(r => r.Id == Id);
+            await _context.SaveChangesAsync();
+            return _context.Permissions.ToList<Permission>().Find(r => r.Id == Id);
         }
 
-        public Permission Update(Permission c)
+        public async Task< Permission> UpdateAsync(Permission c)
         {
-            _context.Permissions.Find(r => r.Id == c.Id).Name = c.Name;
-            _context.Permissions.Find(r => r.Id == c.Id).Description = c.Description;
+            _context.Permissions.ToList<Permission>().Find(r => r.Id == c.Id).Name = c.Name;
+            _context.Permissions.ToList<Permission>().Find(r => r.Id == c.Id).Description = c.Description;
+            await _context.SaveChangesAsync();
             return c;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using common.DTOs;
+using Microsoft.EntityFrameworkCore;
 using MyProject.Repositories.Entities;
 using MyProject.Repositories.Interfaces;
 using Services.Interfaces;
@@ -11,39 +12,39 @@ using System.Threading.Tasks;
 
 namespace Services.Services
 {
-    public class PermissionService : IPermissionService
+    public class IPermissionService : Interfaces.IPermissionService
     {
         private readonly IPermissionRepository _permissionRepository;
         private readonly IMapper _mapper;
 
-        public PermissionService(IPermissionRepository permissionRepository, IMapper mapper)
+        public IPermissionService(IPermissionRepository permissionRepository, IMapper mapper)
         {
             _permissionRepository = permissionRepository; ;
             _mapper = mapper;
         }
-        public PermissionDTO Add(int id, string name, string description)
+        public async Task<PermissionDTO> AddAsync(int id, string name, string description)
         {
-            return _mapper.Map<PermissionDTO>(_permissionRepository.Add(id, name, description));
+            return _mapper.Map<PermissionDTO>(await _permissionRepository.AddAsyncc(id, name, description));
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            _permissionRepository.Delete(id);
+           await _permissionRepository.DeleteAsync(id);
         }
 
-        public List<PermissionDTO> GetAll()
+        public async Task<DbSet<PermissionDTO>> GetAllAsync()
         {
-            return _mapper.Map<List<PermissionDTO>>(_permissionRepository.GetAll());
+            return _mapper.Map<DbSet<PermissionDTO>>(await _permissionRepository.GetAllAsync());
         }
 
-        public PermissionDTO GetById(int id)
+        public async Task<PermissionDTO> GetByIdAsync(int id)
         {
-            return _mapper.Map<PermissionDTO>(_permissionRepository.GetById(id));
+            return _mapper.Map<PermissionDTO>(await _permissionRepository.GetByIdAsync(id));
         }
 
-        public PermissionDTO Update(Permission c)
+        public async Task<PermissionDTO> UpdateAsync(Permission c)
         {
-            return _mapper.Map<PermissionDTO>(_permissionRepository.Update(c));
+            return _mapper.Map<PermissionDTO>(await _permissionRepository.UpdateAsync(c));
         }
     }
 }

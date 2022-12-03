@@ -1,4 +1,5 @@
-﻿using MyProject.Repositories.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using MyProject.Repositories.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace MyProject.Repositories.Interfaces
 {
     public interface IClaimRepository
     {
-        List<Claim> GetAll();
-        Claim GetById(int Id);
-        Claim Add(int id, int roleId, int premissionId, EPolicy policy);
-        Claim Update(Claim c);
-        void Delete(int id);
+       Task<DbSet<Claim>> GetAllAsync();
+       Task<Claim> GetByIdAsync(int Id);
+       Task<Claim> AddAsync(int id, int roleId, int premissionId, EPolicy policy);
+       Task<Claim> UpdateAsync(Claim c);
+       Task DeleteAsync(int id);
     }
 }

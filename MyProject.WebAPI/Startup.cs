@@ -11,6 +11,8 @@ using MyProject.Mock;
 using MyProject.Repositories.Interfaces;
 using MyProject.Repositories.Repositories;
 using Services;
+using Services.Interfaces;
+using Services.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,10 +48,20 @@ namespace MyProject.WebAPI
                                       policy.AllowAnyOrigin().AllowAnyMethod();
                                   });
             });
+            services.AddTransient<IClaimRepository, ClaimRepository>();
+            services.AddTransient<IPermissionRepository, PermissionRepository>();
+            services.AddTransient<IRoleRepository, RoleRepository>();
+            services.AddTransient<IClaimService, ClaimService>();
+            services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<IPermissionService, IPermissionService>();
+
             services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddSingleton<IContext, MockContext>();
             services.AddScoped<IClaimRepository, ClaimRepository>();
             services.AddScoped<IPermissionRepository, PermissionRepository>();
+            services.AddAutoMapper(typeof(Mapping));
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IClaimService,ClaimService>();
+            services.AddScoped<IPermissionService, IPermissionService>();
             services.AddAutoMapper(typeof(Mapping));
         }
 

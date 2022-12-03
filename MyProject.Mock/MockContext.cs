@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyProject.Mock
 {
-    public class MockContext : IContext
+    public class MockContext// : IContext
     {
         public List<Roles> Roles { get; set; }//פה יהיו הנתונים מטבלת roles
         public List<Permission> Permissions { get; set; }

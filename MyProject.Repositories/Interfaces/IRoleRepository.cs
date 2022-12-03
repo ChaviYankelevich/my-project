@@ -1,4 +1,5 @@
-﻿using MyProject.Repositories.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using MyProject.Repositories.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace MyProject.Repositories.Interfaces
 {
     public interface IRoleRepository
     {
-        List<Roles> GetAll();
-        Roles GetById(int Id);
-        Roles Add(int id, string name, string description);
-        Roles Update(Roles c);
-        void Delete(int id);
+        Task<DbSet<Roles>> GetAllAsync();
+        Task<Roles> GetByIdAsync(int Id);
+        Task<Roles> AddAsync(int id, string name, string description);
+        Task<Roles> UpdateAsync(Roles c);
+        Task DeleteAsync(int id);
     }
 }

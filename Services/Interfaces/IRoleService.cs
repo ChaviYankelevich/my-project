@@ -1,4 +1,5 @@
 ﻿using common.DTOs;
+using Microsoft.EntityFrameworkCore;
 using MyProject.Repositories.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Services.Interfaces
 {
-    interface IRoleService
+   public interface IRoleService
     {
-        List<RoleDTO> GetAll();
-        RoleDTO GetById(int Id);
-        RoleDTO Add(int id, string name, string description);
-        RoleDTO Update(Roles c);
-        void Delete(int id);
+        Task<DbSet<RoleDTO>> GetAllAsync();
+        Task<RoleDTO> GetByIdAsync(int Id);
+        Task<RoleDTO> AddAsync(int id, string name, string description);
+        Task<RoleDTO> UpdateAsync(Roles c);
+        Task DeleteAsync(int id);
     }
 }

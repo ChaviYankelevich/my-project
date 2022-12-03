@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using common.DTOs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyProject.Mock;
 using MyProject.Repositories.Entities;
 using MyProject.Repositories.Interfaces;
 using MyProject.Repositories.Repositories;
+using Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,28 +18,29 @@ namespace MyProject.WebAPI.Controllers
     [ApiController]
     public class ClaimController : ControllerBase
     {
-        private readonly IClaimRepository _claimRepository;
+        private readonly IClaimService _claimService;
 
-        public ClaimController(IClaimRepository claimRepository)
+        public ClaimController(IClaimService claimService)
 =>
-            _claimRepository = claimRepository;
+            _claimService = claimService;
 
 
         [HttpGet]
-        public List<Claim> Get()
+        public Task<DbSet<ClaimDTO>> Get()
         {
-            return _claimRepository.GetAll();
+            
+            return _claimService.GetAllAsync();
         }
         [HttpGet("{id}")]
-        public Claim Get(int id)
+        public Task<ClaimDTO> Get(int id)
         {
-            return _claimRepository.GetById(id);
+            return _claimService.GetByIdAsync(id);
         }
         [HttpDelete("{id}")]
-        public void Delete(int id) => _claimRepository.Delete(id);
+        public async Task Delete(int id) =>await _claimService.DeleteAsync(id);
         [HttpPost]
-        public void Post(int id, int roleId,int permitionId, EPolicy policy) => _claimRepository.Add(id, roleId,permitionId,policy);
+        public async Task Post(int id, int roleId,int permitionId, EPolicy policy) =>await _claimService.AddAsync(id, roleId,permitionId,policy);
         [HttpPut("{id}")]
-        public void Put(int id, int roleId, int permitionId, EPolicy policy) => _claimRepository.Update(new Claim(id, roleId, permitionId, policy));
+        public async Task Put(int id, int roleId, int permitionId, EPolicy policy) =>await _claimService.UpdateAsync(new Claim(id, roleId, permitionId, policy));
     }
 }

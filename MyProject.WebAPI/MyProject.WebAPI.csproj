@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\common\common.csproj" />
     <ProjectReference Include="..\MyProject.Mock\MyProject.Mock.csproj" />
     <ProjectReference Include="..\MyProject.Repositories\MyProject.Repositories.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />

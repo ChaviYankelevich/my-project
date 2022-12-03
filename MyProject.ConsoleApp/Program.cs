@@ -9,8 +9,7 @@ namespace MyProject.ConsoleApp
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            //הבה ננסה
-            //it worked
+          
 
             var mock = new MockContext();
 

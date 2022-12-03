@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using MyProject.Repositories.Interfaces;
 using MyProject.Repositories.Entities;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace MyProject.Repositories.Repositories
 {
-   public  class RoleRepository : IRoleRepository
+   public  class RoleRepository: IRoleRepository
     {
         private readonly IContext _context;
 
@@ -18,32 +18,38 @@ namespace MyProject.Repositories.Repositories
             _context = context;
         }
 
-        public Roles Add(int id, string name, string description)
+        public async Task<Roles> AddAsync(int id, string name, string description)
         {
-            Roles r = new Roles(id, description, name);
-            _context.Roles.Add(r);
-            return r;
+            var added = _context.Roles.Add(new Roles { Id = id, Name = name, Description = description });
+            await _context.SaveChangesAsync();
+            return added.Entity;
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            _context.Roles.Remove(_context.Roles.Find(r => r.Id == id));
+            Roles r = _context.Roles.ToList<Roles>().Find(r => r.Id == id);
+            _context.Roles.Remove(r);
+            await _context.SaveChangesAsync();
+
         }
 
-        public List<Roles> GetAll()
+        public async Task<DbSet<Roles>> GetAllAsync()
         {
+            await _context.SaveChangesAsync();
             return _context.Roles;
         }
 
-        public Roles GetById(int Id)
+        public async Task<Roles> GetByIdAsync(int Id)
         {
-            return _context.Roles.Find(r => r.Id == Id);
+            await _context.SaveChangesAsync();
+            return _context.Roles.ToList<Roles>().Find(r => r.Id == Id);
         }
 
-        public Roles Update(Roles c)
+        public async Task<Roles> UpdateAsync(Roles c)
         {
-            _context.Roles.Find(r => r.Id == c.Id).Name = c.Name;
-            _context.Roles.Find(r => r.Id == c.Id).Description = c.Description;
+            _context.Roles.ToList<Roles>().Find(r => r.Id == c.Id).Name = c.Name;
+            _context.Roles.ToList<Roles>().Find(r => r.Id == c.Id).Description = c.Description;
+            await _context.SaveChangesAsync();
             return c;
         }
     }

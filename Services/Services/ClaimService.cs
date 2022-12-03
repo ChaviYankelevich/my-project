@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using common.DTOs;
+using Microsoft.EntityFrameworkCore;
 using MyProject.Repositories.Entities;
 using MyProject.Repositories.Interfaces;
 using MyProject.Repositories.Repositories;
@@ -24,28 +25,28 @@ namespace Services.Services
             _claimRepository = claimRepository;
             _mapper = mapper;
         }
-        public ClaimDTO Add(int id, int roleId, int premissionId, EPolicy policy)
+        public async Task<ClaimDTO> AddAsync(int id, int roleId, int premissionId, EPolicy policy)
         {
-            return _mapper.Map<ClaimDTO>(_claimRepository.Add(id, roleId, premissionId, policy));
+            return _mapper.Map<ClaimDTO>(await _claimRepository.AddAsync(id, roleId, premissionId, policy));
         }
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-           _claimRepository.Delete(id);
-        }
-
-        public List<ClaimDTO> GetAll()
-        {
-            return _mapper.Map<List<ClaimDTO>>(_claimRepository.GetAll());
+          await _claimRepository.DeleteAsync(id);
         }
 
-        public ClaimDTO GetById(int id)
+        public async Task<DbSet<ClaimDTO>> GetAllAsync()
         {
-            return _mapper.Map<ClaimDTO>(_claimRepository.GetById(id));
+            return _mapper.Map<DbSet<ClaimDTO>>(await _claimRepository.GetAllAsync());
         }
 
-        public ClaimDTO Update(Claim c)
+        public async Task<ClaimDTO> GetByIdAsync(int id)
         {
-            return _mapper.Map<ClaimDTO>(_claimRepository.Update(c));
+            return _mapper.Map<ClaimDTO>(await _claimRepository.GetByIdAsync(id));
+        }
+
+        public async Task<ClaimDTO> UpdateAsync(Claim c)
+        {
+            return _mapper.Map<ClaimDTO>(await _claimRepository.UpdateAsync(c));
         }
     }
 }

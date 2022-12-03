@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using common.DTOs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyProject.Mock;
 using MyProject.Repositories.Entities;
 using MyProject.Repositories.Interfaces;
 using MyProject.Repositories.Repositories;
+using Services.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,29 +18,29 @@ namespace MyProject.WebAPI.Controllers
     [ApiController]
     public class PermissionController : ControllerBase
     {
-        private readonly IPermissionRepository _permissionRepository;
+        private readonly IPermissionService _permissionService;
 
-        public PermissionController(IPermissionRepository permissionRepository)
+        public PermissionController(IPermissionService permissionService)
         {
-            _permissionRepository = permissionRepository;
+            _permissionService = permissionService;
         }
     
 
         [HttpGet]
-        public List<Permission> Get()
+        public Task<DbSet<PermissionDTO>> Get()
         {
-            return _permissionRepository.GetAll();
+            return _permissionService.GetAllAsync();
         }
         [HttpGet("{id}")]
-        public Permission Get(int id)
+        public Task<PermissionDTO> Get(int id)
         {
-            return _permissionRepository.GetById(id);
+            return _permissionService.GetByIdAsync(id);
         }
         [HttpDelete("{id}")]
-        public void Delete(int id) => _permissionRepository.Delete(id);
+        public async Task Delete(int id) =>await _permissionService.DeleteAsync(id);
         [HttpPost]
-        public void Post(int id, string name, string description) => _permissionRepository.Add(id, name, description);
+        public async Task Post(int id, string name, string description) =>await _permissionService.AddAsync(id, name, description);
         [HttpPut("{id}")]
-        public void Put(int id, string name, string description) => _permissionRepository.Update(new Permission(id, name, description));
+        public async Task Put(int id, string name, string description) =>await _permissionService.UpdateAsync(new Permission(id, name, description));
     }
 }

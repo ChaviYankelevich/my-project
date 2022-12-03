@@ -1,4 +1,5 @@
 ﻿using common.DTOs;
+using Microsoft.EntityFrameworkCore;
 using MyProject.Repositories.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,10 @@ namespace Services.Interfaces
 {
     public interface IClaimService
     {
-        List<ClaimDTO> GetAll();
-        ClaimDTO GetById(int Id);
-        ClaimDTO Add(int id, int roleId, int premissionId, EPolicy policy);
-        ClaimDTO Update(Claim c);
-        void Delete(int id);
+        Task<DbSet<ClaimDTO>> GetAllAsync();
+        Task<ClaimDTO> GetByIdAsync(int Id);
+        Task<ClaimDTO> AddAsync(int id, int roleId, int premissionId, EPolicy policy);
+        Task<ClaimDTO> UpdateAsync(Claim c);
+        Task DeleteAsync(int id);
     }
 }

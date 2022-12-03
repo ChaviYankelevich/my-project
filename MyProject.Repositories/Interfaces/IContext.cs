@@ -1,4 +1,5 @@
-﻿using MyProject.Repositories.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using MyProject.Repositories.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,9 @@ namespace MyProject.Repositories.Interfaces
 {
     public interface IContext
     {
-        List<Roles> Roles { get; set; }
-        List<Permission> Permissions { get; set; }
-        List<Claim> Claims { get; set; }
+      DbSet<Roles> Roles { get; set; }
+        DbSet<Permission> Permissions { get; set; }
+        DbSet<Claim> Claims { get; set; }
+        Task<int> SaveChangesAsync();
     }
 }
