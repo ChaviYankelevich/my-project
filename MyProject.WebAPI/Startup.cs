@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MyProject.Context;
 using MyProject.Mock;
 using MyProject.Repositories.Interfaces;
 using MyProject.Repositories.Repositories;
@@ -15,8 +17,8 @@ using Services.Interfaces;
 using Services.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace MyProject.WebAPI
 {
@@ -48,13 +50,8 @@ namespace MyProject.WebAPI
                                       policy.AllowAnyOrigin().AllowAnyMethod();
                                   });
             });
-            services.AddTransient<IClaimRepository, ClaimRepository>();
-            services.AddTransient<IPermissionRepository, PermissionRepository>();
-            services.AddTransient<IRoleRepository, RoleRepository>();
-            services.AddTransient<IClaimService, ClaimService>();
-            services.AddTransient<IRoleService, RoleService>();
-            services.AddTransient<IPermissionService, IPermissionService>();
-
+           
+            services.AddDbContext<IContext,DataContext>(options=> options.UseSqlServer(b => b.MigrationsAssembly("MyProject.WebAPI")));
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IClaimRepository, ClaimRepository>();
             services.AddScoped<IPermissionRepository, PermissionRepository>();

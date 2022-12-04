@@ -14,7 +14,7 @@ namespace Services.Interfaces
         Task<DbSet<RoleDTO>> GetAllAsync();
         Task<RoleDTO> GetByIdAsync(int Id);
         Task<RoleDTO> AddAsync(int id, string name, string description);
-        Task<RoleDTO> UpdateAsync(Roles c);
+        Task<RoleDTO> UpdateAsync(Role c);
         Task DeleteAsync(int id);
     }
 }

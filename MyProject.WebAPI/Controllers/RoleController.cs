@@ -39,6 +39,6 @@ namespace MyProject.WebAPI.Controllers
         [HttpPost]
         public void Post(int id,string name,string description) => _roleService.AddAsync(id, name, description);
         [HttpPut("{id}")]
-        public void Put(int id, string name, string description) => _roleService.UpdateAsync(new Roles(id, name, description));
+        public void Put(int id, string name, string description) => _roleService.UpdateAsync(new Role(id, name, description));
     }
 }

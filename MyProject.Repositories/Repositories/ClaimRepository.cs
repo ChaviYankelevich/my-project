@@ -20,7 +20,8 @@ namespace MyProject.Repositories.Repositories
 
         public async Task<Claim> AddAsync(int id, int roleId, int premissionId,EPolicy policy)
         {
-            var added = _context.Claims.Add(new Claim { Id = id,  RoleId=roleId , PermissionId=premissionId,Policy=policy });
+            Role r = new Role(id);          
+            var added = _context.Claims.Add(new Claim { Id = id,Role=r, Permission=new Permission(id), Policy = policy });
             await _context.SaveChangesAsync();
             return added.Entity;
         }       
@@ -49,8 +50,8 @@ namespace MyProject.Repositories.Repositories
         {
             
             _context.Claims.ToList<Claim>().Find(r => r.Id == c.Id).Policy = c.Policy;
-            _context.Claims.ToList<Claim>().Find(r => r.Id == c.Id).RoleId = c.RoleId;
-            _context.Claims.ToList<Claim>().Find(r => r.Id == c.Id).PermissionId = c.PermissionId;
+            _context.Claims.ToList<Claim>().Find(r => r.Id == c.Id).Role.Id = c.Role.Id;
+            _context.Claims.ToList<Claim>().Find(r => r.Id == c.Id).Permission.Id = c.Permission.Id;
             await _context.SaveChangesAsync();
             return c;
         }

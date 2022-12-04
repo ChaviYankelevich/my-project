@@ -23,5 +23,10 @@ namespace MyProject.Repositories.Entities
             Description = description;
             Name = name;
         }
+
+        public Permission(int id)
+        {
+            Id = id;
+        }
     }
 }

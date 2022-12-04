@@ -12,9 +12,9 @@ namespace MyProject.Repositories.Entities
     {
         public int Id { get; set; }
 
-        public int RoleId { get; set; }
+        public Role Role { get; set; }
 
-        public int PermissionId { get; set; }
+        public Permission Permission { get; set; }
 
         public EPolicy Policy { get; set; }
         public Claim()
@@ -25,8 +25,8 @@ namespace MyProject.Repositories.Entities
         public Claim(int id, int roleId, int permissionId, EPolicy policy)
         {
             Id = id;
-            RoleId = roleId;
-            PermissionId = permissionId;
+            Role.Id = roleId;
+            Permission.Id = permissionId;
             Policy = policy;
         }
 

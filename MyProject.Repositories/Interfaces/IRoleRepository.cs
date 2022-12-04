@@ -10,10 +10,10 @@ namespace MyProject.Repositories.Interfaces
 {
     public interface IRoleRepository
     {
-        Task<DbSet<Roles>> GetAllAsync();
-        Task<Roles> GetByIdAsync(int Id);
-        Task<Roles> AddAsync(int id, string name, string description);
-        Task<Roles> UpdateAsync(Roles c);
+        Task<DbSet<Role>> GetAllAsync();
+        Task<Role> GetByIdAsync(int Id);
+        Task<Role> AddAsync(int id, string name, string description);
+        Task<Role> UpdateAsync(Role c);
         Task DeleteAsync(int id);
     }
 }

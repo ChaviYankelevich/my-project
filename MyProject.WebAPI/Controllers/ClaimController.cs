@@ -41,6 +41,6 @@ namespace MyProject.WebAPI.Controllers
         [HttpPost]
         public async Task Post(int id, int roleId,int permitionId, EPolicy policy) =>await _claimService.AddAsync(id, roleId,permitionId,policy);
         [HttpPut("{id}")]
-        public async Task Put(int id, int roleId, int permitionId, EPolicy policy) =>await _claimService.UpdateAsync(new Claim(id, roleId, permitionId, policy));
+        public async Task Put(int id, int roleId, int permitionId, EPolicy policy) =>await _claimService.UpdateAsync(new Claim(id,roleId , permitionId, policy));
     }
 }

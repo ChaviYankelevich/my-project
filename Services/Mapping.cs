@@ -14,7 +14,7 @@ namespace Services
     {
         public Mapping()
         {
-            CreateMap<Roles, RoleDTO>()
+            CreateMap<Role, RoleDTO>()
               //.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
               .ReverseMap();
             CreateMap<Claim, ClaimDTO>()

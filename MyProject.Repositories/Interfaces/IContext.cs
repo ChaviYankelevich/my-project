@@ -10,7 +10,7 @@ namespace MyProject.Repositories.Interfaces
 {
     public interface IContext
     {
-      DbSet<Roles> Roles { get; set; }
+      DbSet<Role> Roles { get; set; }
         DbSet<Permission> Permissions { get; set; }
         DbSet<Claim> Claims { get; set; }
         Task<int> SaveChangesAsync();

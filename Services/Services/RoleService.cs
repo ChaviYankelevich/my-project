@@ -43,7 +43,7 @@ namespace Services.Services
             return _mapper.Map<RoleDTO>(await _roleRepository.GetByIdAsync(id));
         }
 
-        public async Task<RoleDTO> UpdateAsync(Roles c)
+        public async Task<RoleDTO> UpdateAsync(Role c)
         {
             return _mapper.Map<RoleDTO>(await _roleRepository.UpdateAsync(c));
         }
