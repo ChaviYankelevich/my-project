@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace Services.Services
 {
-    public class IPermissionService : Interfaces.IPermissionService
+    public class PermissionService : Interfaces.IPermissionService
     {
         private readonly IPermissionRepository _permissionRepository;
         private readonly IMapper _mapper;
 
-        public IPermissionService(IPermissionRepository permissionRepository, IMapper mapper)
+        public PermissionService(IPermissionRepository permissionRepository, IMapper mapper)
         {
             _permissionRepository = permissionRepository; ;
             _mapper = mapper;

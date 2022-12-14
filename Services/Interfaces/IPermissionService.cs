@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Services.Interfaces
 {
-    interface IPermissionService
+    public interface IPermissionService
     {
         Task<DbSet<PermissionDTO>> GetAllAsync();
         Task<PermissionDTO> GetByIdAsync(int Id);

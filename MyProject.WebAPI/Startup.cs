@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using MyProject.Context;
 using MyProject.Mock;
 using MyProject.Repositories.Interfaces;
 using MyProject.Repositories.Repositories;
+using MyProject.WebAPI.Middlewares;
 using Services;
 using Services.Interfaces;
 using Services.Services;
@@ -50,16 +52,16 @@ namespace MyProject.WebAPI
                                       policy.AllowAnyOrigin().AllowAnyMethod();
                                   });
             });
-           
+            services.AddServices();
             services.AddDbContext<IContext,DataContext>(options=> options.UseSqlServer(b => b.MigrationsAssembly("MyProject.WebAPI")));
-            services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddScoped<IClaimRepository, ClaimRepository>();
-            services.AddScoped<IPermissionRepository, PermissionRepository>();
-            services.AddAutoMapper(typeof(Mapping));
-            services.AddScoped<IRoleService, RoleService>();
-            services.AddScoped<IClaimService,ClaimService>();
-            services.AddScoped<IPermissionService, IPermissionService>();
-            services.AddAutoMapper(typeof(Mapping));
+            //services.AddScoped<IRoleRepository, RoleRepository>();
+            //services.AddScoped<IClaimRepository, ClaimRepository>();
+            //services.AddScoped<IPermissionRepository, PermissionRepository>();
+            //services.AddAutoMapper(typeof(Mapping));
+            //services.AddScoped<IRoleService, RoleService>();
+            //services.AddScoped<IClaimService,ClaimService>();
+            //services.AddScoped<IPermissionService, IPermissionService>();
+            //services.AddAutoMapper(typeof(Mapping));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,11 +79,19 @@ namespace MyProject.WebAPI
             app.UseRouting();
             app.UseCors(_myOrigin);
             app.UseAuthorization();
-
+            app.Use(async (Context, next) =>
+            {
+                DateOnly d=DateOnly.FromDateTime(DateTime.Now);
+                if(d.DayOfWeek== DayOfWeek.Saturday)
+                     Context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                else
+                    await next(Context);
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+            app.UseTrack();
         }
     }
 }
