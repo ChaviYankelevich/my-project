@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using MyProject.Context;
 using MyProject.Mock;
@@ -20,6 +21,7 @@ using Services.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -75,16 +77,22 @@ namespace MyProject.WebAPI
             app.Use(async (Context, next) =>
             {
                 DateOnly d=DateOnly.FromDateTime(DateTime.Now);
-                if(d.DayOfWeek== DayOfWeek.Thursday)
+                if(d.DayOfWeek== DayOfWeek.Saturday)
                 {
                     Context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                    //Context.Response.status(400).json({ 'error':'User already exists.'});
-                    //Context.Response.ContentType = "application/json";
-                    //JsonResult json = new JsonResult("Shabbes!",Context);
-                    //Context.Response.HttpContext = "";
-                    var bytes = Encoding.UTF8.GetBytes("Hello World");
+                    
+                    //var bytes = Encoding.UTF8.GetBytes("Shabes!");
 
-                    await Context.Response.Body.WriteAsync(bytes, 0, bytes.Length);
+                    //await Context.Response.Body.WriteAsync(bytes, 0, bytes.Length);
+                    var jsonOptions = Context.RequestServices.GetService<IOptions<JsonOptions>>();
+
+                    // Serialise using the settings provided
+                    var json = JsonSerializer.Serialize(
+                        new { Foo = "Shabes!" }, // Switch this with your object
+                        jsonOptions?.Value.JsonSerializerOptions);
+
+                    // Write to the response
+                    await Context.Response.WriteAsync(json);
                 }
                      
                 else
