@@ -19,6 +19,7 @@ using Services.Interfaces;
 using Services.Services;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -54,14 +55,6 @@ namespace MyProject.WebAPI
             });
             services.AddServices();
             services.AddDbContext<IContext,DataContext>(options=> options.UseSqlServer(b => b.MigrationsAssembly("MyProject.WebAPI")));
-            //services.AddScoped<IRoleRepository, RoleRepository>();
-            //services.AddScoped<IClaimRepository, ClaimRepository>();
-            //services.AddScoped<IPermissionRepository, PermissionRepository>();
-            //services.AddAutoMapper(typeof(Mapping));
-            //services.AddScoped<IRoleService, RoleService>();
-            //services.AddScoped<IClaimService,ClaimService>();
-            //services.AddScoped<IPermissionService, IPermissionService>();
-            //services.AddAutoMapper(typeof(Mapping));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,8 +75,18 @@ namespace MyProject.WebAPI
             app.Use(async (Context, next) =>
             {
                 DateOnly d=DateOnly.FromDateTime(DateTime.Now);
-                if(d.DayOfWeek== DayOfWeek.Saturday)
-                     Context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                if(d.DayOfWeek== DayOfWeek.Thursday)
+                {
+                    Context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    //Context.Response.status(400).json({ 'error':'User already exists.'});
+                    //Context.Response.ContentType = "application/json";
+                    //JsonResult json = new JsonResult("Shabbes!",Context);
+                    //Context.Response.HttpContext = "";
+                    var bytes = Encoding.UTF8.GetBytes("Hello World");
+
+                    await Context.Response.Body.WriteAsync(bytes, 0, bytes.Length);
+                }
+                     
                 else
                     await next(Context);
             });
